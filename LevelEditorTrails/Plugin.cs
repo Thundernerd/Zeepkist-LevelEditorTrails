@@ -1,7 +1,6 @@
 ﻿using BepInEx;
 using BepInEx.Configuration;
 using HarmonyLib;
-using TrailRendererLevelEditor;
 using UnityEngine;
 
 namespace TNRD.Zeepkist.LevelEditorTrails

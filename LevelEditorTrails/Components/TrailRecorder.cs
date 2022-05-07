@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using TNRD.Zeepkist.LevelEditorTrails;
 using UnityEngine;
 
-namespace TrailRendererLevelEditor.Components
+namespace TNRD.Zeepkist.LevelEditorTrails.Components
 {
     public class TrailRecorder : MonoBehaviour
     {

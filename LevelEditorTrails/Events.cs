@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TrailRendererLevelEditor
+namespace TNRD.Zeepkist.LevelEditorTrails
 {
     public static class Events
     {

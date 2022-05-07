@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using TNRD.Zeepkist.LevelEditorTrails;
 using UnityEngine;
 
-namespace TrailRendererLevelEditor
+namespace TNRD.Zeepkist.LevelEditorTrails
 {
     public class RecordedTrails
     {

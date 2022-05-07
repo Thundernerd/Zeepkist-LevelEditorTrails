@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace TrailRendererLevelEditor
+namespace TNRD.Zeepkist.LevelEditorTrails
 {
     public class ColorManager
     {

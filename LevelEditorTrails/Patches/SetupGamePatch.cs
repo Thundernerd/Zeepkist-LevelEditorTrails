@@ -1,7 +1,7 @@
 ﻿using HarmonyLib;
 using JetBrains.Annotations;
 
-namespace TrailRendererLevelEditor.Patches
+namespace TNRD.Zeepkist.LevelEditorTrails.Patches
 {
     [HarmonyPatch(typeof(SetupGame), "SpawnPlayers")]
     public class SetupGamePatch

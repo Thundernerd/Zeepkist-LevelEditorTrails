@@ -1,9 +1,9 @@
 ﻿using HarmonyLib;
 using JetBrains.Annotations;
-using TrailRendererLevelEditor.Components;
+using TNRD.Zeepkist.LevelEditorTrails.Components;
 using UnityEngine;
 
-namespace TrailRendererLevelEditor.Patches
+namespace TNRD.Zeepkist.LevelEditorTrails.Patches
 {
     [HarmonyPatch(typeof(LEV_TestMap), nameof(LEV_TestMap.TestMap))]
     public class LEV_TestMapPatch

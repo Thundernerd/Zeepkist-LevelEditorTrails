@@ -1,7 +1,7 @@
 ﻿using HarmonyLib;
 using JetBrains.Annotations;
 
-namespace TrailRendererLevelEditor.Patches
+namespace TNRD.Zeepkist.LevelEditorTrails.Patches
 {
     [HarmonyPatch(typeof(LEV_PauseMenu), nameof(LEV_PauseMenu.QuitToMenu))]
     public class LEV_PauseMenuPatch

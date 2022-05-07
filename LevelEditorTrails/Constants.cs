@@ -1,4 +1,4 @@
-﻿namespace TrailRendererLevelEditor
+﻿namespace TNRD.Zeepkist.LevelEditorTrails
 {
     public class Constants
     {

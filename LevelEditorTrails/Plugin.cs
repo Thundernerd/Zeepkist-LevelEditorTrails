@@ -18,12 +18,16 @@ namespace TNRD.Zeepkist.LevelEditorTrails
         public static ConfigEntry<KeyCode> KeyToggleVisibility { get; private set; }
         public static ConfigEntry<KeyCode> KeyRemoveLines { get; private set; }
 
+        private Harmony harmony;
+
         private void Awake()
         {
             LevelOfDetail = Config.Bind("General",
                 "levelOfDetail",
                 5,
-                $"Min = {Constants.MIN_LOD} / Max = {Constants.MAX_LOD}. The higher the more detailed");
+                new ConfigDescription(
+                    $"Min = {Constants.MIN_LOD} / Max = {Constants.MAX_LOD}. The higher the more detailed",
+                    new AcceptableValueRange<int>(Constants.MIN_LOD, Constants.MAX_LOD)));
 
             MaxRecordings = Config.Bind("General",
                 "maxRecordings",
@@ -33,7 +37,9 @@ namespace TNRD.Zeepkist.LevelEditorTrails
             LineWidth = Config.Bind("General",
                 "lineWidth",
                 0.5f,
-                $"Min = {Constants.MIN_WIDTH} / Max = {Constants.MAX_WIDTH}. The higher the thicker");
+                new ConfigDescription(
+                    $"Min = {Constants.MIN_WIDTH} / Max = {Constants.MAX_WIDTH}. The higher the thicker",
+                    new AcceptableValueRange<float>(Constants.MIN_WIDTH, Constants.MAX_WIDTH)));
 
             KeyToggleVisibility = Config.Bind("Keys",
                 "toggleVisibility",
@@ -45,10 +51,15 @@ namespace TNRD.Zeepkist.LevelEditorTrails
                 KeyCode.F8,
                 "Pressing this will remove all lines");
 
-            Harmony harmony = new Harmony("net.tnrd.zeepkist.trailrenderer");
+            harmony = new Harmony("net.tnrd.zeepkist.trailrenderer");
             harmony.PatchAll();
 
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
+        }
+
+        private void OnDestroy()
+        {
+            harmony?.UnpatchSelf();
         }
 
         private void Update()

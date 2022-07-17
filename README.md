@@ -1,4 +1,4 @@
-# Mod-Zeepkist-Trails
+# Zeepkist-LevelEditorTrails
 
 A mod that draws trails in the level editor for the runs that you've played. Helps with guesstimating where your next block(s) should go!
 

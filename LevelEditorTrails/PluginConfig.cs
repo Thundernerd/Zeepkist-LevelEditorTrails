@@ -1,4 +1,3 @@
-using System;
 using BepInEx.Configuration;
 using UnityEngine;
 using ZeepSDK.LevelEditor;
@@ -13,8 +12,6 @@ internal class PluginConfig : MonoBehaviour
     private bool _isTesting;
 
     private ConfigFile Config => _plugin.Config;
-
-    public static event Action RemoveLinesPressed;
     
     public static ConfigEntry<int> LevelOfDetail { get; private set; }
     public static ConfigEntry<int> MaxRecordings { get; private set; }
@@ -159,7 +156,8 @@ internal class PluginConfig : MonoBehaviour
 
         if (Input.GetKeyDown(KeyRemoveLines.Value))
         {
-            RemoveLinesPressed?.Invoke();
+            TrailStorage.SaveForCurrentLevel([]);
+            TrailManager.LoadTrails([]);
         }
     }
 }

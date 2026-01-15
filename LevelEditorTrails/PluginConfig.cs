@@ -14,7 +14,6 @@ internal class PluginConfig : MonoBehaviour
 
     private ConfigFile Config => _plugin.Config;
 
-    public static event Action ToggleVisibilityPressed;
     public static event Action RemoveLinesPressed;
     
     public static ConfigEntry<int> LevelOfDetail { get; private set; }
@@ -25,7 +24,8 @@ internal class PluginConfig : MonoBehaviour
     public static ConfigEntry<bool> TimeMarkersVisible { get; private set; }
     public static ConfigEntry<float> TimeMarkerStep { get; private set; }
 
-    public static ConfigEntry<KeyCode> KeyToggleVisibility { get; private set; }
+    public static ConfigEntry<KeyCode> KeyToggleLineVisibility { get; private set; }
+    public static ConfigEntry<KeyCode> KeyToggleTimeMarkerVisibility { get; private set; }
     public static ConfigEntry<KeyCode> KeyRemoveLines { get; private set; }
     
     public static ConfigEntry<TrailColorMode> ColorMode { get; private set; }
@@ -106,7 +106,7 @@ internal class PluginConfig : MonoBehaviour
             1f,
             new ConfigDescription("The time in seconds between every time marker"));
 
-        KeyToggleVisibility = Config.Bind("Keys",
+        KeyToggleLineVisibility = Config.Bind("Keys",
             "toggleVisibility",
             KeyCode.F7,
             "Toggles the visibility of the lines");
@@ -115,6 +115,11 @@ internal class PluginConfig : MonoBehaviour
             "removeAllLines",
             KeyCode.F8,
             "Pressing this will remove all lines");
+
+        KeyToggleTimeMarkerVisibility = Config.Bind("Keys",
+            "Toggle Time Marker Visibility",
+            KeyCode.F6,
+            "Toggles the visibility of the time markers");
 
         ColorMode = Config.Bind("Colors",
             "Color Mode",
@@ -142,9 +147,14 @@ internal class PluginConfig : MonoBehaviour
         if (!_isInEditor && !_isTesting)
             return;
 
-        if (Input.GetKeyDown(KeyToggleVisibility.Value))
+        if (Input.GetKeyDown(KeyToggleLineVisibility.Value))
         {
             LinesVisible.Value = !LinesVisible.Value;
+        }
+
+        if (Input.GetKeyDown(KeyToggleTimeMarkerVisibility.Value))
+        {
+            TimeMarkersVisible.Value = !TimeMarkersVisible.Value;
         }
 
         if (Input.GetKeyDown(KeyRemoveLines.Value))

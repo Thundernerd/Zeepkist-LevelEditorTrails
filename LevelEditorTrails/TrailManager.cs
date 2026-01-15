@@ -31,7 +31,7 @@ internal static class TrailManager
         {
             foreach (Trail trail in LoadedTrails)
             {
-                CreateTrail(trail, PluginConfig.StartColor.Value);
+                CreateTrail(trail, PluginConfig.Color.Value);
             }
         }
         else

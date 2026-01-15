@@ -12,8 +12,7 @@ internal class PluginConfig : MonoBehaviour
     private bool _isTesting;
 
     private ConfigFile Config => _plugin.Config;
-    
-    public static ConfigEntry<int> LevelOfDetail { get; private set; }
+
     public static ConfigEntry<int> MaxRecordings { get; private set; }
     public static ConfigEntry<float> LineWidth { get; private set; }
     
@@ -69,13 +68,6 @@ internal class PluginConfig : MonoBehaviour
 
     private void BindSettings()
     {
-        LevelOfDetail = Config.Bind("General",
-            "levelOfDetail",
-            5,
-            new ConfigDescription(
-                $"Min = {Constants.MIN_LOD} / Max = {Constants.MAX_LOD}. The higher the more detailed",
-                new AcceptableValueRange<int>(Constants.MIN_LOD, Constants.MAX_LOD)));
-        
         MaxRecordings = Config.Bind("General",
             "Maximum Recordings",
             5,
@@ -104,12 +96,12 @@ internal class PluginConfig : MonoBehaviour
             new ConfigDescription("The time in seconds between every time marker"));
 
         KeyToggleLineVisibility = Config.Bind("Keys",
-            "toggleVisibility",
+            "Toggle Line Visibility",
             KeyCode.F7,
             "Toggles the visibility of the lines");
 
         KeyRemoveLines = Config.Bind("Keys",
-            "removeAllLines",
+            "Remove All Lines",
             KeyCode.F8,
             "Pressing this will remove all lines");
 

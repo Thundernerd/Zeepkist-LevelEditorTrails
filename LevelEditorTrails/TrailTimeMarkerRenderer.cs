@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace TNRD.Zeepkist.LevelEditorTrails;
@@ -6,36 +7,49 @@ namespace TNRD.Zeepkist.LevelEditorTrails;
 internal class TrailTimeMarkerRenderer : MonoBehaviour
 {
     private Trail _trail;
+    private readonly List<List<Matrix4x4>> _matrixGroups = [];
+    private Mesh _mesh;
+    private Material _material;
     
     private void Awake()
     {
-        PluginConfig.TimeMarkersVisible.SettingChanged += OnVisibleChanged;
         PluginConfig.TimeMarkerStep.SettingChanged += OnStepChanged;
     }
 
     private void OnDestroy()
     {
-        PluginConfig.TimeMarkersVisible.SettingChanged -= OnVisibleChanged;
         PluginConfig.TimeMarkerStep.SettingChanged -= OnStepChanged;
-    }
-
-    private void OnVisibleChanged(object sender, EventArgs e)
-    {
-        gameObject.SetActive(PluginConfig.TimeMarkersVisible.Value);
     }
 
     public void Initialize(Trail trail)
     {
         _trail = trail;
         CreateMarkers();
-        gameObject.SetActive(PluginConfig.TimeMarkersVisible.Value);
+        
+        
+        GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        if (_mesh == null)
+        {
+            _mesh = obj.GetComponent<MeshFilter>().mesh;
+        }
+
+        if (_material == null)
+        {
+            _material = obj.GetComponent<MeshRenderer>().material;
+            _material.enableInstancing = true;
+        }
+
+        Destroy(obj);
     }
 
-    private void DestroyMarkers()
+    private void Update()
     {
-        for (int i = 0; i < transform.childCount; i++)
+        if (!PluginConfig.TimeMarkersVisible.Value)
+            return;
+
+        foreach (List<Matrix4x4> matrixGroup in _matrixGroups)
         {
-            Destroy(transform.GetChild(i).gameObject);
+            Graphics.DrawMeshInstanced(_mesh, 0, _material, matrixGroup);
         }
     }
 
@@ -43,31 +57,38 @@ internal class TrailTimeMarkerRenderer : MonoBehaviour
     {
         float previousMod = 0;
 
+        List<Matrix4x4> group = new(1023);
+        
         foreach (TrailFrame frame in _trail.Frames)
         {
             float currentMod = frame.Time % PluginConfig.TimeMarkerStep.Value;
 
             if (currentMod < previousMod)
             {
-                GameObject primitive = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                primitive.transform.SetParent(transform);
-                primitive.transform.position = frame.Position;
-                primitive.transform.localScale = Vector3.one *
-                                                 (PluginConfig.LineWidth.Value /
-                                                  (float)PluginConfig.LineWidth.DefaultValue);
-                if (primitive.TryGetComponent(out Collider collider))
+                group.Add(Matrix4x4.TRS(
+                    frame.Position,
+                    Quaternion.identity,
+                    Vector3.one * (PluginConfig.LineWidth.Value /
+                                   (float)PluginConfig.LineWidth.DefaultValue)));
+
+                if (group.Count == 1023)
                 {
-                    Destroy(collider);
+                    _matrixGroups.Add(group);
+                    group.Clear();
                 }
             }
 
             previousMod = currentMod;
         }
+
+        if (group.Count > 0)
+        {
+            _matrixGroups.Add(group);
+        }
     }
 
     private void OnStepChanged(object sender, EventArgs e)
     {
-        DestroyMarkers();
         CreateMarkers();
     }
 }

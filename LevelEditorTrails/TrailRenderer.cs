@@ -22,6 +22,7 @@ internal class TrailRenderer : MonoBehaviour
 
         _line.receiveShadows = false;
         _line.shadowCastingMode = ShadowCastingMode.Off;
+        _line.loop = false;
         
         PluginConfig.LinesVisible.SettingChanged += OnLinesVisibleChanged;
     }
@@ -40,13 +41,16 @@ internal class TrailRenderer : MonoBehaviour
     {
         _line.startColor = color;
         _line.endColor = color;
-        _line.positionCount = trail.Frames.Count;
 
         var step = PluginConfig.LineFidelity.Value;
-        _line.SetPositions(trail.Frames
+        var positions = trail.Frames
             .Where((_, i) => i == 0 || i == trail.Frames.Count - 1 || i % step == 0)
             .Select(x => x.Position)
-            .ToArray());
+            .ToArray();
+
+        _line.positionCount = positions.Length;
+        _line.SetPositions(positions);
+
         gameObject.SetActive(PluginConfig.LinesVisible.Value);
     }
 }

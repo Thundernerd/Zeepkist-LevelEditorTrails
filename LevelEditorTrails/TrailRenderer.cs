@@ -42,7 +42,7 @@ internal class TrailRenderer : MonoBehaviour
         _line.startColor = color;
         _line.endColor = color;
 
-        var step = PluginConfig.LineFidelity.Value;
+        var step = PluginConfig.LineFrameStep.Value;
         var positions = trail.Frames
             .Where((_, i) => i == 0 || i == trail.Frames.Count - 1 || i % step == 0)
             .Select(x => x.Position)

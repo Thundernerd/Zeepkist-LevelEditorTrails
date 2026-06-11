@@ -15,6 +15,7 @@ internal class PluginConfig : MonoBehaviour
 
     public static ConfigEntry<int> MaxRecordings { get; private set; }
     public static ConfigEntry<float> LineWidth { get; private set; }
+    public static ConfigEntry<int> LineFidelity { get; private set; }
     
     public static ConfigEntry<bool> LinesVisible { get; private set; }
     public static ConfigEntry<bool> TimeMarkersVisible { get; private set; }
@@ -79,6 +80,13 @@ internal class PluginConfig : MonoBehaviour
             new ConfigDescription(
                 "The width of the trail line",
                 new AcceptableValueRange<float>(Constants.MIN_WIDTH, Constants.MAX_WIDTH)));
+
+        LineFidelity = Config.Bind("General",
+            "Line Fidelity",
+            1,
+            new ConfigDescription(
+                "The detail of the lines. Higher number means less detail (means more performance)",
+                new AcceptableValueRange<int>(1, 10)));
 
         LinesVisible = Config.Bind("General",
             "linesVisible",

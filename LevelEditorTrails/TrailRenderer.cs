@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -40,7 +41,12 @@ internal class TrailRenderer : MonoBehaviour
         _line.startColor = color;
         _line.endColor = color;
         _line.positionCount = trail.Frames.Count;
-        _line.SetPositions(trail.Frames.Select(x=>x.Position).ToArray());
+
+        var step = PluginConfig.LineFidelity.Value;
+        _line.SetPositions(trail.Frames
+            .Where((_, i) => i == 0 || i == trail.Frames.Count - 1 || i % step == 0)
+            .Select(x => x.Position)
+            .ToArray());
         gameObject.SetActive(PluginConfig.LinesVisible.Value);
     }
 }
